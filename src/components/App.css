@@ -1,0 +1,20 @@
+@font-face {
+  font-family: MarioFont;
+  src: url('./../assets/SuperMario256.ttf');
+}
+
+.App {
+  text-align: center;
+  background-size: cover;
+  height: 100VH;
+}
+
+.App-background {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  filter: blur(4px) brightness(85%) saturate(70%);
+  background-image: url('./../assets/stage_bg.png');
+  background-size: cover;
+  z-index: -1;
+}

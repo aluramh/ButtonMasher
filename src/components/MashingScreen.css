@@ -1,0 +1,33 @@
+.mashing {
+  width: 60%;
+  margin-left: auto!important;
+  margin-right: auto!important;
+}
+
+.mashing-container {
+  height: 600px;
+  width: 500px;
+  border-radius: 4px;
+  margin: 1rem;
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;
+  background-image: url('./../assets/mashing-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 2px 12px 0px black;
+}
+
+.timer-container {
+  margin: 1rem;
+  height: 150px;
+  width: 180px;
+  font-family: MarioFont;
+  color: white;
+  -webkit-text-stroke: 1px black;
+}
+
+.table.data th {
+  text-align: left;
+}
