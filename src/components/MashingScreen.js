@@ -82,23 +82,30 @@ class MashingScreen extends Component {
             <div className="count">
               <h2>{this.state.running ? 'Running' : 'Stopped'}</h2>
               <table className="table data">
-                <tr>
-                  <th>Time elapsed:</th>
-                  <td>{this.state.elapsedTime} ms</td>
-                </tr>
-                <tr>
-                  <th>Button presses:</th>
-                  <td>{this.state.keyboardPresses}</td>
-                </tr>
-                <tr>
-                  <th>Speed:</th>
-                  <td>{(this.state.keyboardPresses / this.convertMsToS(this.state.elapsedTime)).toFixed(2)}</td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <th>Time elapsed:</th>
+                    <td>{this.state.elapsedTime} ms</td>
+                  </tr>
+                  <tr>
+                    <th>Button presses:</th>
+                    <td>{this.state.keyboardPresses}</td>
+                  </tr>
+                  <tr>
+                    <th>Speed:</th>
+                    <td>
+                      {this.state.keyboardPresses !== 0 && this.state.elapsedTime !== 0
+                        ? (this.state.keyboardPresses / this.state.elapsedTime * 1000).toFixed(2)
+                        : 'N/A'}&nbsp;B/s
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
             <div className="controls">
-              <button className="btn btn-primary" onClick={this.startTimer}>{this.state.running ? 'Restart' : 'Start'}</button>
-              <button className="btn btn-danger" onClick={this.stopTimer}>Stop</button>
+              <button className="btn btn-mushroom green" onClick={this.startTimer}>{this.state.running ? 'Restart' : 'Start'}</button>
+              <br/>
+              <button className="btn btn-mushroom red" onClick={this.stopTimer}>Stop</button>
             </div>
           </div>
         </div>
