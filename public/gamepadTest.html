@@ -5,11 +5,16 @@
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
   </head>
   <body>
-    <h2>This is a gamepad test.</h2>
-
+    <h1>This is a gamepad test.</h1>
+    <h2 id="counter"></h2>
     <script>  
       var haveEvents = 'ongamepadconnected' in window;
       var controllers = {};
+
+      let prevBState = false; //1 = pressed; 0 = not pressed.
+      let counter = 0;
+      let selectedGamepad = 0;
+      const updateTime = 50; // ms
     
       function connecthandler(e) {
         addgamepad(e.gamepad);
@@ -84,38 +89,45 @@
           var controller = controllers[j];
           var d = document.getElementById("controller" + j);
           var buttons = d.getElementsByClassName("button");
-    
-          for (i = 0; i < controller.buttons.length; i++) {
-            var b = buttons[i];
-            var val = controller.buttons[i];
-            var pressed = val == 1.0;
-            if (typeof(val) == "object") {
-              pressed = val.pressed;
-              val = val.value;
-            }
-    
-            var pct = Math.round(val * 100) + "%";
-            b.style.backgroundSize = pct + " " + pct;
-    
-            if (pressed) {
-              if (i === 2) {
-                console.log('Button pressed: B');
-              }
+            
+          const i = 2;
+          var b = buttons[i];
+          var val = controller.buttons[i];
+          var pressed = val == 1.0;
+          if (typeof(val) == "object") {
+            pressed = val.pressed;
+            val = val.value;
+          }
+  
+          var pct = Math.round(val * 100) + "%";
+          b.style.backgroundSize = pct + " " + pct;
+        
+          // If previous state was NOT pressed, then change state to pressed.
+          // High rise.
+          if (controller.index === 0) {
+            if (pressed === true && prevBState === false)  {
+              console.log('CONTROLLER', j);
+              counter++;
               b.className = "button pressed";
-            } else {
-              b.className = "button";
+              document.getElementById("counter").innerHTML = counter;
+              // console.log('Pressed:', pressed, prevBState);
+            // If button is not pressed, and previous status is pressed, then change state to unpressed.
+            } else if (pressed === false && prevBState === true) {
+                prevBState = 0;
+                b.className = "button";
             }
+            prevBState = pressed;
           }
     
           var axes = d.getElementsByClassName("axis");
-          for (i = 0; i < controller.axes.length; i++) {
+          for (let i = 0; i < controller.axes.length; i++) {
             var a = axes[i];
             a.innerHTML = i + ": " + controller.axes[i].toFixed(4);
             a.setAttribute("value", controller.axes[i] + 1);
           }
         }
-
-        requestAnimationFrame(updateStatus);
+        
+        setTimeout(() => requestAnimationFrame(updateStatus), updateTime);
       }
     
       function scangamepads() {
