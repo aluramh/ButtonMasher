@@ -4,7 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'bootstrap/dist/js/bootstrap.min.js';
 
 import './App.css';
-import MashingScreen from './MashingScreen.js'
+import MashingScreen from './MashingScreen'
+import GamepadContainer from './GamepadContainer'
 
 class App extends Component {
   render() {
@@ -12,6 +13,7 @@ class App extends Component {
       <div className="App">
         <div className="App-background"></div>
         <MashingScreen></MashingScreen>
+        <GamepadContainer></GamepadContainer>
       </div>
     );
   }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import gamepad from './gamepad'
 import './MashingScreen.css';
 
 class MashingScreen extends Component {
@@ -16,17 +15,7 @@ class MashingScreen extends Component {
       maxTime: 5000,
       // Interval for each time execution.
       interval: 30,
-      running: false,
-
-      // FOR GAMEPAD
-      haveEvents: 'ongamepadconnected' in window,
-      controllers: {},
-      // Maybe use an array of values to update each of the 4 controllers in a GC adapter.
-      prevBState: false, // 1 = pressed; 0 = not pressed.
-      counter: 0,
-      // Store the last used gamepad
-      // let selectedGamepad = 0;
-      updateTime: 50 // ms
+      running: false
     };
 
     this.addButtonPress = this.addButtonPress.bind(this);  
@@ -36,16 +25,7 @@ class MashingScreen extends Component {
     this.restartTimer = this.restartTimer.bind(this);          
   }
 
-  componentDidMount () {
-    window.addEventListener("gamepadconnected", gamepad.connecthandler);
-    window.addEventListener("gamepaddisconnected", gamepad.disconnecthandler);
-
-    if (!this.haveEvents) {
-      setInterval(gamepad.scangamepads, 500);
-    }
-  }
-
-  addButtonPress() {
+  addButtonPress () {
     if (this.state.running) {
       this.setState({ keyboardPresses: this.state.keyboardPresses + 1 })
     }
@@ -89,7 +69,7 @@ class MashingScreen extends Component {
     return (ms / 1000).toFixed(2);
   }
 
-  render() {
+  render () {
     return (
       <div className="mashing">
         <div className="d-flex flex-row">
