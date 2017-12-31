@@ -8,6 +8,7 @@
     <h1>This is a gamepad test.</h1>
     <h2 id="counter"></h2>
     <script>  
+      // Functions for handling HTML connections to a gamepad
       var haveEvents = 'ongamepadconnected' in window;
       var controllers = {};
 
@@ -15,92 +16,42 @@
       let counter = 0;
       let selectedGamepad = 0;
       const updateTime = 50; // ms
-    
+
       function connecthandler(e) {
         addgamepad(e.gamepad);
       }
-    
+
       function addgamepad(gamepad) {
         controllers[gamepad.index] = gamepad;
-    
-        var d = document.createElement("div");
-        d.setAttribute("id", "controller" + gamepad.index);
-    
-        var t = document.createElement("h1");
-        t.appendChild(document.createTextNode("gamepad: " + gamepad.id));
-        d.appendChild(t);
-    
-        var b = document.createElement("div");
-        b.className = "buttons";
-        for (var i = 0; i < gamepad.buttons.length; i++) {
-          var e = document.createElement("span");
-          e.className = "button";
-          //e.id = "b" + i;
-          e.innerHTML = i;
-          b.appendChild(e);
-        }
-    
-        d.appendChild(b);
-    
-        var a = document.createElement("div");
-        a.className = "axes";
-    
-        for (var i = 0; i < gamepad.axes.length; i++) {
-          var p = document.createElement("progress");
-          p.className = "axis";
-          //p.id = "a" + i;
-          p.setAttribute("max", "2");
-          p.setAttribute("value", "1");
-          p.innerHTML = i;
-          a.appendChild(p);
-        }
-    
-        d.appendChild(a);
-    
-        // See https://github.com/luser/gamepadtest/blob/master/index.html
-        var start = document.getElementById("start");
-        if (start) {
-          start.style.display = "none";
-        }
-    
-        document.body.appendChild(d);
         requestAnimationFrame(updateStatus);
       }
-    
+
       function disconnecthandler(e) {
         removegamepad(e.gamepad);
       }
-    
+
       function removegamepad(gamepad) {
-        var d = document.getElementById("controller" + gamepad.index);
-        document.body.removeChild(d);
         delete controllers[gamepad.index];
       }
-    
+
       function updateStatus() {
         if (!haveEvents) {
           scangamepads();
         }
-    
+
         var i = 0;
         var j;
-    
+
         for (j in controllers) {
           var controller = controllers[j];
-          var d = document.getElementById("controller" + j);
-          var buttons = d.getElementsByClassName("button");
             
-          const i = 2;
-          var b = buttons[i];
+          const i = 2; // "B" button
           var val = controller.buttons[i];
           var pressed = val == 1.0;
           if (typeof(val) == "object") {
             pressed = val.pressed;
             val = val.value;
           }
-  
-          var pct = Math.round(val * 100) + "%";
-          b.style.backgroundSize = pct + " " + pct;
         
           // If previous state was NOT pressed, then change state to pressed.
           // High rise.
@@ -108,28 +59,18 @@
             if (pressed === true && prevBState === false)  {
               console.log('CONTROLLER', j);
               counter++;
-              b.className = "button pressed";
               document.getElementById("counter").innerHTML = counter;
-              // console.log('Pressed:', pressed, prevBState);
             // If button is not pressed, and previous status is pressed, then change state to unpressed.
             } else if (pressed === false && prevBState === true) {
                 prevBState = 0;
-                b.className = "button";
             }
             prevBState = pressed;
           }
-    
-          var axes = d.getElementsByClassName("axis");
-          for (let i = 0; i < controller.axes.length; i++) {
-            var a = axes[i];
-            a.innerHTML = i + ": " + controller.axes[i].toFixed(4);
-            a.setAttribute("value", controller.axes[i] + 1);
-          }
         }
-        
+        // Request a new update in "updateTime" ms
         setTimeout(() => requestAnimationFrame(updateStatus), updateTime);
       }
-    
+
       function scangamepads() {
         var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
         for (var i = 0; i < gamepads.length; i++) {
@@ -142,14 +83,13 @@
           }
         }
       }
-    
-    
+
       window.addEventListener("gamepadconnected", connecthandler);
       window.addEventListener("gamepaddisconnected", disconnecthandler);
-    
+
       if (!haveEvents) {
         setInterval(scangamepads, 500);
-      } 
+      }
     </script>
   </body>
 </html>
