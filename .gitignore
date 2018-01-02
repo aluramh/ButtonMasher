@@ -19,3 +19,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# These files are ignored because they're generated at compilation/dev-server time.
+src/**/*.css
