@@ -1,19 +1,15 @@
-.mashing {
-  width: 60%;
-  margin-left: auto!important;
-  margin-right: auto!important;
-}
+@import url('https://fonts.googleapis.com/css?family=Lato');
 
 .mashing-container {
   height: 600px;
-  width: 500px;
+  /* width: 100%; */
   border-radius: 4px;
   margin: 1rem;
   -webkit-user-select: none;  /* Chrome all / Safari all */
   -moz-user-select: none;     /* Firefox all */
   -ms-user-select: none;      /* IE 10+ */
   user-select: none;
-  background-image: url('./../assets/mashing-bg.jpg');
+  /* background-image: url('./../assets/mashing-bg.jpg'); */
   background-size: cover;
   background-position: center;
   box-shadow: 0 2px 12px 0px black;
@@ -21,8 +17,12 @@
 
 .timer-container {
   margin: 1rem;
-  height: 150px;
-  width: 180px;
+  height: auto;
+  font-family: 'Lato', sans-serif;
+  color: white;
+}
+
+.timer-container > .count h2 {
   font-family: MarioFont;
   color: white;
   -webkit-text-stroke: 1px black;
@@ -41,6 +41,9 @@
   border: none;
   transition: filter 250ms;
   cursor: pointer;
+  font-family: MarioFont;
+  color: white;
+  -webkit-text-stroke: 1px black;
 }
 
 .controls > .btn.btn-mushroom:active {

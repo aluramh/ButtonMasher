@@ -1,6 +1,54 @@
 import React, { Component } from 'react';
 import './MashingScreen.css';
 
+const MashingSection = ({onClickHandler}) => {
+  return (
+    <div className="mashing-container"
+      onClick={onClickHandler}
+      title="Clicks in this area also count as button presses.">
+    </div>
+  )
+}
+
+const Timer = ({
+  startClickHandler,
+  stopClickHandler,
+  running, elapsedTime, keyboardPresses
+}) => {
+  return (
+    <div className="timer-container">
+      <div className="count">
+        <h2>{running ? 'Running' : 'Stopped'}</h2>
+        <table className="table data">
+          <tbody>
+            <tr>
+              <th>Time elapsed:</th>
+              <td>{elapsedTime} ms</td>
+            </tr>
+            <tr>
+              <th>Button presses:</th>
+              <td>{keyboardPresses}</td>
+            </tr>
+            <tr>
+              <th>Speed:</th>
+              <td>
+                {keyboardPresses !== 0 && elapsedTime !== 0
+                  ? (keyboardPresses / elapsedTime * 1000).toFixed(2)
+                  : 0}&nbsp;B/s
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className="controls">
+        <button className="btn btn-mushroom green" onClick={startClickHandler}>{running ? 'Restart' : 'Start'}</button>
+        <br/>
+        <button className="btn btn-mushroom red" onClick={stopClickHandler}>Stop</button>
+      </div>
+    </div>
+  )
+}
+
 class MashingScreen extends Component {
   constructor (props) {
     super(props);
@@ -65,48 +113,19 @@ class MashingScreen extends Component {
     }
   }
 
-  convertMsToS (ms) {
-    return (ms / 1000).toFixed(2);
-  }
-
   render () {
     return (
-      <div className="mashing">
-        <div className="d-flex flex-row">
-          <div className="mashing-container" 
-            onClick={this.addButtonPress}
-            title="Clicks in this area also count as button presses.">
+      <div className="container order-md-1">
+        <div className="row justify-content-center">
+          <div className="col-md-4">
+            <Timer
+              {...this.state}
+              startClickHandler={this.startTimer}
+              stopClickHandler={this.stopTimer}>
+            </Timer>
           </div>
-
-          <div className="timer-container">
-            <div className="count">
-              <h2>{this.state.running ? 'Running' : 'Stopped'}</h2>
-              <table className="table data">
-                <tbody>
-                  <tr>
-                    <th>Time elapsed:</th>
-                    <td>{this.state.elapsedTime} ms</td>
-                  </tr>
-                  <tr>
-                    <th>Button presses:</th>
-                    <td>{this.state.keyboardPresses}</td>
-                  </tr>
-                  <tr>
-                    <th>Speed:</th>
-                    <td>
-                      {this.state.keyboardPresses !== 0 && this.state.elapsedTime !== 0
-                        ? (this.state.keyboardPresses / this.state.elapsedTime * 1000).toFixed(2)
-                        : 'N/A'}&nbsp;B/s
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="controls">
-              <button className="btn btn-mushroom green" onClick={this.startTimer}>{this.state.running ? 'Restart' : 'Start'}</button>
-              <br/>
-              <button className="btn btn-mushroom red" onClick={this.stopTimer}>Stop</button>
-            </div>
+          <div className="col-md-8 order-md-first">
+            <MashingSection onClickHandler={this.addButtonPress}></MashingSection>
           </div>
         </div>
       </div>
