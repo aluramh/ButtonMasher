@@ -14,19 +14,13 @@ class GamepadContainer extends Component {
       // let selectedGamepad = 0;
       updateTime: 50 // ms
     }
-    this.connecthandler = this.connecthandler.bind(this);
-    this.addgamepad = this.addgamepad.bind(this);
-    this.disconnecthandler = this.disconnecthandler.bind(this);
-    this.removegamepad = this.removegamepad.bind(this);
-    this.scangamepads = this.scangamepads.bind(this);
-    this.updateStatus = this.updateStatus.bind(this);
   }
 
-  connecthandler (e) {
+  connecthandler = (e) => {
     this.addgamepad(e.gamepad);
   }
   
-  addgamepad (gamepad) {
+  addgamepad = (gamepad) => {
     const newGamepadsObject = { ...this.state.controllers };    
     newGamepadsObject[gamepad.index] = gamepad;
     this.setState({ controllers: newGamepadsObject });
@@ -34,15 +28,15 @@ class GamepadContainer extends Component {
     requestAnimationFrame(this.updateStatus);
   }
   
-  disconnecthandler (e) {
+  disconnecthandler = (e) => {
     this.removegamepad(e.gamepad);
   }
 
-  removegamepad (gamepad) {
+  removegamepad = (gamepad) => {
     delete this.state.controllers[gamepad.index];
   }
 
-  scangamepads () {
+  scangamepads = () => {
     const gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
     for (var i = 0; i < gamepads.length; i++) {
       if (gamepads[i]) {
@@ -60,7 +54,7 @@ class GamepadContainer extends Component {
     }
   }
 
-  updateStatus () {
+  updateStatus = () => {
     if (!this.state.haveEvents) {
       this.scangamepads();
     }

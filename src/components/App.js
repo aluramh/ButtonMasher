@@ -11,10 +11,9 @@ class App extends Component {
     this.state = {
       counter: 0
     }
-    this.modifyCounter = this.modifyCounter.bind(this);
   }
 
-  modifyCounter (newCounter) {
+  modifyCounter = (newCounter) => {
     this.setState({counter: newCounter})
   }
 

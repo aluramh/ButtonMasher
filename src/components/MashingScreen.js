@@ -69,22 +69,16 @@ class MashingScreen extends Component {
       interval: 30,
       running: false
     };
-
-    this.addButtonPress = this.addButtonPress.bind(this);  
-    this.tick = this.tick.bind(this);        
-    this.startTimer = this.startTimer.bind(this);        
-    this.stopTimer = this.stopTimer.bind(this);        
-    this.restartTimer = this.restartTimer.bind(this);          
   }
 
-  addButtonPress () {
+  addButtonPress = () => {
     if (this.state.running) {
       // Parent global state
       this.props.modifyCounter(this.props.counter + 1)
     }
   }
 
-  startTimer () {
+  startTimer = () => {
     // First stop a timer if there is one:
     clearInterval(this.timer);
     // Then set up and start a new timer.
@@ -96,17 +90,17 @@ class MashingScreen extends Component {
     this.props.modifyCounter(0)
   }
 
-  stopTimer () {
+  stopTimer = () => {
     clearInterval(this.timer);
     this.setState({ running: false });
   }
 
-  restartTimer () {
+  restartTimer = () => {
     this.setState({ startTime: Date.now() });
     clearInterval(this.timer);
   }
 
-  tick () {
+  tick = () => {
     // 90f is Luigi's cyclone duration.
     // which equals 1.5s = 1500 ms
     if (this.state.elapsedTime > this.state.maxTime) {
