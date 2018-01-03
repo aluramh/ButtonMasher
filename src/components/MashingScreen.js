@@ -115,7 +115,7 @@ class MashingScreen extends Component {
 
   render () {
     return (
-      <div className="container order-md-1">
+      <div className="mashing-page-container container order-md-1">
         <div className="row justify-content-center">
           <div className="col-md-4">
             <Timer

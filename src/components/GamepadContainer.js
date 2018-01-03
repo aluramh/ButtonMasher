@@ -12,7 +12,9 @@ class GamepadContainer extends Component {
       counter: 0,
       // Store the last used gamepad
       // let selectedGamepad = 0;
-      updateTime: 50 // ms
+      updateTime: 50, // ms
+      // Stores the js interval timer
+      scanner: null
     }
   }
 
@@ -86,13 +88,20 @@ class GamepadContainer extends Component {
     setTimeout(() => requestAnimationFrame(this.updateStatus), this.state.updateTime);
   }
 
-  componentDidMount = () => {
+  componentDidMount () {
     window.addEventListener("gamepadconnected", this.connecthandler);
     window.addEventListener("gamepaddisconnected", this.disconnecthandler);
 
     if (!this.state.haveEvents) {
-      setInterval(this.scangamepads, 500);
+      // Fastest human mash is 16 B/s, so a time interval of 500ms supports
+      // about 20 B/s.
+      this.setState({scanner: setInterval(this.scangamepads, 500)});
     }
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.state.scanner);
+    this.setState({scanner: null});
   }
 
   render () {

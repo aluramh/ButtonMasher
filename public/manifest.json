@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Button Masher",
+  "name": "Button Masher for Smash 4",
   "icons": [
     {
       "src": "favicon.ico",
