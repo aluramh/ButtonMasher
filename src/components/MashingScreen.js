@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'; // ES6
 import './MashingScreen.css';
 
 const MashingSection = ({onClickHandler}) => {
@@ -13,7 +14,7 @@ const MashingSection = ({onClickHandler}) => {
 const Timer = ({
   startClickHandler,
   stopClickHandler,
-  running, elapsedTime, keyboardPresses
+  running, elapsedTime, counter
 }) => {
   return (
     <div className="timer-container">
@@ -27,13 +28,13 @@ const Timer = ({
             </tr>
             <tr>
               <th>Button presses:</th>
-              <td>{keyboardPresses}</td>
+              <td>{counter}</td>
             </tr>
             <tr>
               <th>Speed:</th>
               <td>
-                {keyboardPresses !== 0 && elapsedTime !== 0
-                  ? (keyboardPresses / elapsedTime * 1000).toFixed(2)
+                {counter !== 0 && elapsedTime !== 0
+                  ? (counter / elapsedTime * 1000).toFixed(2)
                   : 0}&nbsp;B/s
               </td>
             </tr>
@@ -50,11 +51,14 @@ const Timer = ({
 }
 
 class MashingScreen extends Component {
+  static propTypes = {
+    counter: PropTypes.number.isRequired,
+    modifyCounter: PropTypes.func.isRequired
+  }
+
   constructor (props) {
     super(props);
     this.state = {
-      // For the mashing
-      keyboardPresses: 0,
       timeElapsed: 0,
       // For the timer
       // This variable is in ms
@@ -75,7 +79,8 @@ class MashingScreen extends Component {
 
   addButtonPress () {
     if (this.state.running) {
-      this.setState({ keyboardPresses: this.state.keyboardPresses + 1 })
+      // Parent global state
+      this.props.modifyCounter(this.props.counter + 1)
     }
   }
 
@@ -85,9 +90,10 @@ class MashingScreen extends Component {
     // Then set up and start a new timer.
     this.setState({ startTime: Date.now() });
     this.setState({ elapsedTime: 0 });
-    this.setState({ keyboardPresses: 0 });    
     this.timer = setInterval(this.tick, this.state.interval);
-    this.setState({ running: true });    
+    this.setState({ running: true });
+    // Parent global state
+    this.props.modifyCounter(0)
   }
 
   stopTimer () {
@@ -120,6 +126,7 @@ class MashingScreen extends Component {
           <div className="col-md-4">
             <Timer
               {...this.state}
+              {...this.props}
               startClickHandler={this.startTimer}
               stopClickHandler={this.stopTimer}>
             </Timer>

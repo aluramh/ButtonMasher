@@ -6,12 +6,24 @@ import MashingScreen from './MashingScreen'
 import GamepadContainer from './GamepadContainer'
 
 class App extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      counter: 0
+    }
+    this.modifyCounter = this.modifyCounter.bind(this);
+  }
+
+  modifyCounter (newCounter) {
+    this.setState({counter: newCounter})
+  }
+
   render() {
     return (
       <div className="App">
         <div className="App-background"></div>
-        <MashingScreen></MashingScreen>
-        <GamepadContainer></GamepadContainer>
+        <MashingScreen counter={this.state.counter} modifyCounter={this.modifyCounter} />
+        <GamepadContainer counter={this.state.counter} modifyCounter={this.modifyCounter} />
       </div>
     );
   }

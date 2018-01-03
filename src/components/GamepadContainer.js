@@ -14,7 +14,6 @@ class GamepadContainer extends Component {
       // let selectedGamepad = 0;
       updateTime: 50 // ms
     }
-    this.componentDidMount = this.componentDidMount.bind(this);
     this.connecthandler = this.connecthandler.bind(this);
     this.addgamepad = this.addgamepad.bind(this);
     this.disconnecthandler = this.disconnecthandler.bind(this);
@@ -93,7 +92,7 @@ class GamepadContainer extends Component {
     setTimeout(() => requestAnimationFrame(this.updateStatus), this.state.updateTime);
   }
 
-  componentDidMount () {
+  componentDidMount = () => {
     window.addEventListener("gamepadconnected", this.connecthandler);
     window.addEventListener("gamepaddisconnected", this.disconnecthandler);
 
