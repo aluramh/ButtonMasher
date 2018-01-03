@@ -15,7 +15,7 @@ $largeDesktop: 1200px;
     -moz-user-select: none;     /* Firefox all */
     -ms-user-select: none;      /* IE 10+ */
     user-select: none;
-    /* background-image: url('./../assets/mashing-bg.jpg'); */
+    background-image: url('./../assets/mashing-bg.jpg');
     background-size: cover;
     background-position: center;
     box-shadow: 0 2px 12px 0px black;
@@ -74,7 +74,7 @@ $largeDesktop: 1200px;
         width: initial;
         display: flex;
         flex: 1 1 auto;
-        background-color: red;
+        // background-color: red;
         & > div {
           width: 100%;
         }
