@@ -14,6 +14,8 @@ const MashingSection = ({onClickHandler}) => {
 const Timer = ({
   startClickHandler,
   stopClickHandler,
+  editTimerPeriod,
+  maxTime,
   running, elapsedTime, counter
 }) => {
   return (
@@ -22,6 +24,16 @@ const Timer = ({
         <h2>{running ? 'Running' : 'Stopped'}</h2>
         <table className="table data">
           <tbody>
+            <tr>
+              <th>Timer period:</th>
+              <td>
+                <select value={maxTime} onChange={editTimerPeriod}>
+                  <option value={1500} title="Luigi Cyclone duration">1.5 s</option>
+                  <option value={5000}>5 s</option>
+                  <option value={10000}>10 s</option>
+                </select>
+              </td>
+            </tr>
             <tr>
               <th>Time elapsed:</th>
               <td>{elapsedTime} ms</td>
@@ -69,6 +81,10 @@ class MashingScreen extends Component {
       interval: 30,
       running: false
     };
+  }
+
+  editTimerPeriod = (e) => {
+    this.setState({maxTime: e.target.value})
   }
 
   addButtonPress = () => {
@@ -122,7 +138,8 @@ class MashingScreen extends Component {
               {...this.state}
               {...this.props}
               startClickHandler={this.startTimer}
-              stopClickHandler={this.stopTimer}>
+              stopClickHandler={this.stopTimer}
+              editTimerPeriod={this.editTimerPeriod}>
             </Timer>
           </div>
           <div className="col-md-8 order-md-first">

@@ -40,6 +40,8 @@ $largeDesktop: 1200px;
     }
     .controls {
       .btn.btn-mushroom {
+        $box-shadow: 0 2px 9px 0px;
+
         width: 150px;
         margin: 5px;
         background-size: cover;
@@ -51,7 +53,12 @@ $largeDesktop: 1200px;
         font-family: MarioFont;
         color: white;
         -webkit-text-stroke: 1px black;
-        &:active { filter: brightness(70%) }
+        outline: none;
+        box-shadow: $box-shadow rgba(0,0,0,0.4);
+        &:active {
+          filter: brightness(70%);
+          box-shadow: $box-shadow black;
+        }
         &.green { background-image: url('./../assets/btn-bg-green.png') !important }      
         &.red { background-image: url('./../assets/btn-bg.png') !important }
       }
