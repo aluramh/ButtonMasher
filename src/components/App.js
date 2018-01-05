@@ -9,20 +9,88 @@ class App extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      counter: 0
+      counter: 0,
+      timeElapsed: 0,
+      // For the timer
+      // This variable is in ms
+      elapsedTime: 0,
+      startTime: Date.now(),
+      maxTime: 5000,
+      // Interval for each time execution.
+      interval: 30,
+      running: false
     }
   }
 
-  modifyCounter = (newCounter) => {
+  updateCounter = (newCounter) => {
     this.setState({counter: newCounter})
+  }
+
+  increaseCounter = () => {
+    this.updateCounter(this.state.counter + 1)
+  }
+
+  setTimerPeriod = (e) => {
+    const val = parseInt(e.target.value, 10)
+    this.setState({maxTime: val})
+  }
+
+  addButtonPress = () => {
+    if (this.state.running) {
+      // Parent global state
+      this.updateCounter(this.counter + 1)
+    }
+  }
+
+  startTimer = () => {
+    // First stop a timer if there is one:
+    clearInterval(this.timer);
+    // Then set up and start a new timer.
+    this.setState({ startTime: Date.now() });
+    this.setState({ elapsedTime: 0 });
+    this.timer = setInterval(this.tick, this.state.interval);
+    this.setState({ running: true });
+    // Parent global state
+    this.updateCounter(0)
+  }
+
+  stopTimer = () => {
+    clearInterval(this.timer);
+    this.setState({ running: false });
+  }
+
+  restartTimer = () => {
+    this.setState({ startTime: Date.now() });
+    clearInterval(this.timer);
+  }
+
+  tick = () => {
+    // 90f is Luigi's cyclone duration.
+    // which equals 1.5s = 1500 ms
+    if (this.state.elapsedTime > this.state.maxTime) {
+      this.stopTimer();
+      console.log(Date.now() - this.state.startTime);
+    } else {
+      this.setState({
+        elapsedTime: Date.now() - this.state.startTime
+      })
+    }
   }
 
   render() {
     return (
       <div className="App">
         <div className="App-background"></div>
-        <MashingScreen counter={this.state.counter} modifyCounter={this.modifyCounter} />
-        <GamepadContainer counter={this.state.counter} modifyCounter={this.modifyCounter} />
+        <MashingScreen
+          {...this.state}
+          increaseCounter={this.increaseCounter}
+          setTimerPeriod={this.setTimerPeriod}
+          addButtonPress={this.addButtonPress}
+          startTimer={this.startTimer}
+          stopTimer={this.stopTimer}
+          restartTimer={this.restartTimer}>
+        </MashingScreen>
+        <GamepadContainer counter={this.state.counter} increaseCounter={this.increaseCounter} />
       </div>
     );
   }
