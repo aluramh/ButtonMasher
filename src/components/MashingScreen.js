@@ -2,22 +2,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'; // ES6
 import './MashingScreen.css';
 
-const MashingSection = ({onClickHandler}) => {
+const MashingSection = ({increaseCounter, counter}) => {
   return (
     <div className="mashing-container"
-      onClick={onClickHandler}
+      onClick={increaseCounter}
       title="Clicks in this area also count as button presses.">
     </div>
   )
 }
 
 const Timer = ({
-  startClickHandler,
-  stopClickHandler,
-  editTimerPeriod,
-  maxTime,
-  running, elapsedTime, counter
-}) => {
+    startTimer,
+    stopTimer,
+    setTimerPeriod,
+    maxTime,
+    running, elapsedTime, counter
+  }) => {
   return (
     <div className="timer-container">
       <div className="count">
@@ -27,7 +27,7 @@ const Timer = ({
             <tr>
               <th>Timer period:</th>
               <td>
-                <select value={maxTime} onChange={editTimerPeriod}>
+                <select value={maxTime} onChange={setTimerPeriod}>
                   <option value={1500} title="Luigi Cyclone duration">1.5 s</option>
                   <option value={5000}>5 s</option>
                   <option value={10000}>10 s</option>
@@ -54,9 +54,9 @@ const Timer = ({
         </table>
       </div>
       <div className="controls">
-        <button className="btn btn-mushroom green" onClick={startClickHandler}>{running ? 'Restart' : 'Start'}</button>
+        <button className="btn btn-mushroom green" onClick={startTimer}>{running ? 'Restart' : 'Start'}</button>
         <br/>
-        <button className="btn btn-mushroom red" onClick={stopClickHandler}>Stop</button>
+        <button className="btn btn-mushroom red" onClick={stopTimer}>Stop</button>
       </div>
     </div>
   )
@@ -64,86 +64,33 @@ const Timer = ({
 
 class MashingScreen extends Component {
   static propTypes = {
+    // Function props
+    increaseCounter: PropTypes.func.isRequired,
+    setTimerPeriod: PropTypes.func.isRequired,
+    addButtonPress: PropTypes.func.isRequired,
+    startTimer: PropTypes.func.isRequired,
+    stopTimer: PropTypes.func.isRequired,
+    restartTimer: PropTypes.func.isRequired,
+
+    // Global state props
     counter: PropTypes.number.isRequired,
-    modifyCounter: PropTypes.func.isRequired
-  }
-
-  constructor (props) {
-    super(props);
-    this.state = {
-      timeElapsed: 0,
-      // For the timer
-      // This variable is in ms
-      elapsedTime: 0,
-      startTime: Date.now(),
-      maxTime: 5000,
-      // Interval for each time execution.
-      interval: 30,
-      running: false
-    };
-  }
-
-  editTimerPeriod = (e) => {
-    this.setState({maxTime: e.target.value})
-  }
-
-  addButtonPress = () => {
-    if (this.state.running) {
-      // Parent global state
-      this.props.modifyCounter(this.props.counter + 1)
-    }
-  }
-
-  startTimer = () => {
-    // First stop a timer if there is one:
-    clearInterval(this.timer);
-    // Then set up and start a new timer.
-    this.setState({ startTime: Date.now() });
-    this.setState({ elapsedTime: 0 });
-    this.timer = setInterval(this.tick, this.state.interval);
-    this.setState({ running: true });
-    // Parent global state
-    this.props.modifyCounter(0)
-  }
-
-  stopTimer = () => {
-    clearInterval(this.timer);
-    this.setState({ running: false });
-  }
-
-  restartTimer = () => {
-    this.setState({ startTime: Date.now() });
-    clearInterval(this.timer);
-  }
-
-  tick = () => {
-    // 90f is Luigi's cyclone duration.
-    // which equals 1.5s = 1500 ms
-    if (this.state.elapsedTime > this.state.maxTime) {
-      this.stopTimer();
-      console.log(Date.now() - this.state.startTime);
-    } else {
-      this.setState({
-        elapsedTime: Date.now() - this.state.startTime
-      })
-    }
-  }
+    timeElapsed: PropTypes.number.isRequired,
+    elapsedTime: PropTypes.number.isRequired,
+    // startTime: Date.now(),
+    maxTime: PropTypes.number.isRequired,
+    interval: PropTypes.number.isRequired,
+    running: PropTypes.bool.isRequired
+  };
 
   render () {
     return (
       <div className="mashing-page-container container order-md-1">
         <div className="row justify-content-center">
           <div className="col-md-4">
-            <Timer
-              {...this.state}
-              {...this.props}
-              startClickHandler={this.startTimer}
-              stopClickHandler={this.stopTimer}
-              editTimerPeriod={this.editTimerPeriod}>
-            </Timer>
+            <Timer {...this.props}></Timer>
           </div>
           <div className="col-md-8 order-md-first">
-            <MashingSection onClickHandler={this.addButtonPress}></MashingSection>
+            <MashingSection increaseCounter={this.props.increaseCounter} counter={this.props.counter}/>
           </div>
         </div>
       </div>
