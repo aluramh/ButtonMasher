@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class GamepadContainer extends Component {
   constructor (props) {
@@ -9,13 +10,17 @@ class GamepadContainer extends Component {
       controllers: {},
       // Maybe use an array of values to update each of the 4 controllers in a GC adapter.
       prevBState: false, // 1 = pressed; 0 = not pressed.
-      counter: 0,
       // Store the last used gamepad
       // let selectedGamepad = 0;
       updateTime: 50, // ms
       // Stores the js interval timer
       scanner: null
     }
+  }
+
+  static propTypes = {
+    running: PropTypes.bool.isRequired,
+    incrementCounter: PropTypes.func.isRequired
   }
 
   connecthandler = (e) => {
@@ -39,7 +44,13 @@ class GamepadContainer extends Component {
   }
 
   scangamepads = () => {
-    const gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+    const gamepads = navigator.getGamepads
+      ? navigator.getGamepads() 
+      : (
+        navigator.webkitGetGamepads
+        ? navigator.webkitGetGamepads() 
+        : []
+      );
     for (var i = 0; i < gamepads.length; i++) {
       if (gamepads[i]) {
         if (gamepads[i].index in this.state.controllers) {          
@@ -63,25 +74,28 @@ class GamepadContainer extends Component {
   
     for (let j in this.state.controllers) {
       const controller = this.state.controllers[j];
-        
-      const i = 2; // "B" button
-      var val = controller.buttons[i];
+      var bButton = controller.buttons[2];
+      var pressed = bButton === 1.0;
 
-      var pressed = val === 1.0;
-      if (typeof(val) === "object") {
-        pressed = val.pressed;
-        val = val.value;
+      var startButton = controller.buttons[9];
+      var startPressed = startButton.pressed;
+
+      if (typeof(bButton) === "object") {
+        pressed = bButton.pressed;
+        bButton = bButton.value;
       }
+
     
       // If previous state was NOT pressed, then change state to pressed.
       // High rise.
       if (controller.index === 0) {
         if (pressed === true && this.state.prevBState === false)  {
-          this.setState({ counter: this.state.counter + 1 });
-
-          // document.getElementById("counter").innerHTML = counter;
+          if (this.props.running) this.props.incrementCounter();
         }
         this.setState({ prevBState: pressed });
+        if (startPressed) {
+          this.props.startTimer()
+        }
       }
     }
     // Request a new update in "updateTime" ms
@@ -106,9 +120,7 @@ class GamepadContainer extends Component {
 
   render () {
     return (
-      <div>
-        <h1 style={{color: 'white'}}>{this.state.counter}</h1>
-      </div>
+      <div></div>
     );
   }
 }

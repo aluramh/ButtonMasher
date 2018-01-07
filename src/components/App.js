@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css';
 import MashingScreen from './MashingScreen'
-import GamepadContainer from './GamepadContainer'
+import GamepadWrapper from './GamepadWrapper'
 
 class App extends Component {
   constructor (props) {
@@ -26,7 +26,7 @@ class App extends Component {
     this.setState({counter: newCounter})
   }
 
-  increaseCounter = () => {
+  incrementCounter = () => {
     this.updateCounter(this.state.counter + 1)
   }
 
@@ -59,11 +59,6 @@ class App extends Component {
     this.setState({ running: false });
   }
 
-  restartTimer = () => {
-    this.setState({ startTime: Date.now() });
-    clearInterval(this.timer);
-  }
-
   tick = () => {
     // 90f is Luigi's cyclone duration.
     // which equals 1.5s = 1500 ms
@@ -83,14 +78,17 @@ class App extends Component {
         <div className="App-background"></div>
         <MashingScreen
           {...this.state}
-          increaseCounter={this.increaseCounter}
+          incrementCounter={this.incrementCounter}
           setTimerPeriod={this.setTimerPeriod}
           addButtonPress={this.addButtonPress}
           startTimer={this.startTimer}
-          stopTimer={this.stopTimer}
-          restartTimer={this.restartTimer}>
+          stopTimer={this.stopTimer}>
         </MashingScreen>
-        <GamepadContainer counter={this.state.counter} increaseCounter={this.increaseCounter} />
+        <GamepadWrapper
+          startTimer={this.startTimer}
+          incrementCounter={this.incrementCounter}
+          running={this.state.running}>
+        </GamepadWrapper>
       </div>
     );
   }
