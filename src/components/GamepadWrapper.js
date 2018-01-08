@@ -20,7 +20,7 @@ class GamepadContainer extends Component {
 
   static propTypes = {
     running: PropTypes.bool.isRequired,
-    incrementCounter: PropTypes.func.isRequired
+    addButtonPress: PropTypes.func.isRequired
   }
 
   connecthandler = (e) => {
@@ -47,10 +47,11 @@ class GamepadContainer extends Component {
     const gamepads = navigator.getGamepads
       ? navigator.getGamepads() 
       : (
-        navigator.webkitGetGamepads
-        ? navigator.webkitGetGamepads() 
-        : []
-      );
+          navigator.webkitGetGamepads
+            ? navigator.webkitGetGamepads() 
+            : []
+        );
+
     for (var i = 0; i < gamepads.length; i++) {
       if (gamepads[i]) {
         if (gamepads[i].index in this.state.controllers) {          
@@ -74,25 +75,29 @@ class GamepadContainer extends Component {
   
     for (let j in this.state.controllers) {
       const controller = this.state.controllers[j];
-      var bButton = controller.buttons[2];
-      var pressed = bButton === 1.0;
+      const bButton = controller.buttons[2];
+      const startButton = controller.buttons[9];
 
-      var startButton = controller.buttons[9];
-      var startPressed = startButton.pressed;
+      // Get the status of the buttons.
+      const pressed = bButton === 1.0;
+      const startPressed = startButton.pressed;
 
-      if (typeof(bButton) === "object") {
-        pressed = bButton.pressed;
-        bButton = bButton.value;
-      }
-
+      // Confirms variable is an object before accessing properties.
+      // if (typeof(bButton) === "object") {
+      //   pressed = bButton.pressed;
+      //   bButton = bButton.value;
+      // }
     
-      // If previous state was NOT pressed, then change state to pressed.
-      // High rise.
+      // Check only for controller port 4 (= index 0)
       if (controller.index === 0) {
+        // If previous state was NOT pressed, then change state to pressed.
+        // High rise.
         if (pressed === true && this.state.prevBState === false)  {
-          if (this.props.running) this.props.incrementCounter();
+          this.props.addButtonPress();
         }
         this.setState({ prevBState: pressed });
+
+        // If start is pressed, restart the timer.
         if (startPressed) {
           this.props.startTimer()
         }
@@ -107,15 +112,21 @@ class GamepadContainer extends Component {
     window.addEventListener("gamepaddisconnected", this.disconnecthandler);
 
     if (!this.state.haveEvents) {
-      // Fastest human mash is 16 B/s, so a time interval of 500ms supports
-      // about 20 B/s.
-      this.setState({scanner: setInterval(this.scangamepads, 500)});
+      // Fastest human mash is 16 B/s, so a time interval of 500ms supports about 20 B/s.
+      // Use Nyquist frequency, so use a 2x faster frequency than the fastest mashing.
+      // (https://en.wikipedia.org/wiki/Nyquist_frequency)
+      this.setState({scanner: setInterval(this.scangamepads, 250)});
     }
   }
 
   componentWillUnmount () {
+    // Clear the timer
     clearInterval(this.state.scanner);
     this.setState({scanner: null});
+
+    // Clear the window listeners.
+    window.removeEventListener("gamepadconnected", this.connecthandler);
+    window.removeEventListener("gamepaddisconnected", this.disconnecthandler);
   }
 
   render () {

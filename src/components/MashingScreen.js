@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'; // ES6
 import './MashingScreen.css';
 
-const MashingSection = ({increaseCounter, counter}) => {
+const MashingSection = ({addButtonPress, counter}) => {
   return (
     <div className="mashing-container"
-      onClick={increaseCounter}
+      onClick={addButtonPress}
       title="Clicks in this area also count as button presses.">
     </div>
   )
@@ -65,12 +65,10 @@ const Timer = ({
 class MashingScreen extends Component {
   static propTypes = {
     // Function props
-    increaseCounter: PropTypes.func.isRequired,
     setTimerPeriod: PropTypes.func.isRequired,
     addButtonPress: PropTypes.func.isRequired,
     startTimer: PropTypes.func.isRequired,
     stopTimer: PropTypes.func.isRequired,
-    restartTimer: PropTypes.func.isRequired,
 
     // Global state props
     counter: PropTypes.number.isRequired,
@@ -83,6 +81,8 @@ class MashingScreen extends Component {
   };
 
   render () {
+    const {addButtonPress, counter} = this.props;
+
     return (
       <div className="mashing-page-container container order-md-1">
         <div className="row justify-content-center">
@@ -90,7 +90,7 @@ class MashingScreen extends Component {
             <Timer {...this.props}></Timer>
           </div>
           <div className="col-md-8 order-md-first">
-            <MashingSection increaseCounter={this.props.increaseCounter} counter={this.props.counter}/>
+            <MashingSection addButtonPress={addButtonPress} counter={counter}/>
           </div>
         </div>
       </div>

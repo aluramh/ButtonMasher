@@ -30,16 +30,15 @@ class App extends Component {
     this.updateCounter(this.state.counter + 1)
   }
 
+  addButtonPress = () => {
+    if (this.state.running) {
+      this.updateCounter(this.state.counter + 1)
+    }
+  }
+
   setTimerPeriod = (e) => {
     const val = parseInt(e.target.value, 10)
     this.setState({maxTime: val})
-  }
-
-  addButtonPress = () => {
-    if (this.state.running) {
-      // Parent global state
-      this.updateCounter(this.counter + 1)
-    }
   }
 
   startTimer = () => {
@@ -78,15 +77,14 @@ class App extends Component {
         <div className="App-background"></div>
         <MashingScreen
           {...this.state}
-          incrementCounter={this.incrementCounter}
-          setTimerPeriod={this.setTimerPeriod}
           addButtonPress={this.addButtonPress}
+          setTimerPeriod={this.setTimerPeriod}
           startTimer={this.startTimer}
           stopTimer={this.stopTimer}>
         </MashingScreen>
         <GamepadWrapper
           startTimer={this.startTimer}
-          incrementCounter={this.incrementCounter}
+          addButtonPress={this.addButtonPress}
           running={this.state.running}>
         </GamepadWrapper>
       </div>
