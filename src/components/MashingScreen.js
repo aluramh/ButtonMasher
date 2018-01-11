@@ -18,6 +18,8 @@ const Timer = ({
     maxTime,
     running, elapsedTime, counter
   }) => {
+  const maxTimeOptions = [1500, 5000, 10000];
+
   return (
     <div className="timer-container">
       <div className="count">
@@ -27,11 +29,17 @@ const Timer = ({
             <tr>
               <th>Timer period:</th>
               <td>
-                <select value={maxTime} onChange={setTimerPeriod}>
-                  <option value={1500} title="Luigi Cyclone duration">1.5 s</option>
-                  <option value={5000}>5 s</option>
-                  <option value={10000}>10 s</option>
-                </select>
+                <div className="btn-group btn-group-toggle">
+                  {maxTimeOptions.map(mashingTime => 
+                    <label key={mashingTime} 
+                      className={`btn btn-secondary ${maxTime === mashingTime ? 'active' : null}`}>
+                      <input type="radio" name="mash"
+                        value={mashingTime} 
+                        checked={maxTime === mashingTime} 
+                        onChange={setTimerPeriod} />
+                      {mashingTime / 1000} s
+                    </label>)}
+                </div>
               </td>
             </tr>
             <tr>
