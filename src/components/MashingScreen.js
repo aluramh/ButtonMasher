@@ -29,7 +29,7 @@ const Timer = ({
             <tr>
               <th>Timer period:</th>
               <td>
-                <div className="btn-group btn-group-toggle">
+                <div className="btn-group btn-group-toggle mash-time-selector">
                   {maxTimeOptions.map(mashingTime => 
                     <label key={mashingTime} 
                       className={`btn btn-secondary ${maxTime === mashingTime ? 'active' : null}`}>
@@ -84,7 +84,6 @@ class MashingScreen extends Component {
     elapsedTime: PropTypes.number.isRequired,
     // startTime: Date.now(),
     maxTime: PropTypes.number.isRequired,
-    interval: PropTypes.number.isRequired,
     running: PropTypes.bool.isRequired
   };
 

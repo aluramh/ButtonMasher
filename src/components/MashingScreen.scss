@@ -4,6 +4,7 @@ $phone: 576px;
 $tablet: 768px;
 $desktop: 992px;
 $largeDesktop: 1200px;
+$fontFamily: 'Lato', sans-serif;
 
 .mashing-page-container {
   .mashing-container {
@@ -24,7 +25,7 @@ $largeDesktop: 1200px;
   .timer-container {
     margin: 1rem;
     height: auto;
-    font-family: 'Lato', sans-serif;
+    font-family: $fontFamily;
     color: white;
     .count {
       h2 {
@@ -61,6 +62,24 @@ $largeDesktop: 1200px;
         }
         &.green { background-image: url('./../assets/btn-bg-green.png') !important }      
         &.red { background-image: url('./../assets/btn-bg.png') !important }
+      }
+    }
+    .mash-time-selector {
+      font-family: $fontFamily;
+      label.btn {
+        border: none !important;
+        background-color: #34af12;
+        color: white;
+        &.active {
+          color: #34af12;
+          font-weight: bold;
+          background-color: white;
+          box-shadow: rgb(175, 255, 153) 0px 1px 4px 0px;
+        }
+        &:not(.active) {
+          filter: brightness(85%);
+          box-shadow: none;
+        }
       }
     }
   }
