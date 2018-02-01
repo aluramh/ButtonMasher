@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import MashingScreen from './MashingScreen'
 import GamepadWrapper from './GamepadWrapper'
+import Introduction from './Introduction'
 
 class App extends Component {
   constructor (props) {
@@ -75,6 +76,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-background"></div>
+        <Introduction />
         <MashingScreen
           {...this.state}
           addButtonPress={this.addButtonPress}
