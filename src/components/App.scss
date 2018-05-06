@@ -14,16 +14,16 @@ $largeDesktop: 1200px;
   min-height: 100VH;
   height: auto;
   position: relative;
-  .App-background {
+  padding: 3rem 0;
+  &:before {
+    content: '';
     position: absolute;
-    height: 100%;
+    left: 0;
+    top: 0;
     width: 100%;
-    filter: blur(4px) brightness(85%) saturate(70%);
-    background-image: url('./../assets/stage_bg.png');
-    background-size: cover;
-    background-position: center; 
-    z-index: -1;
-  }  
+    height: 100%;
+    background-color: #dbf7d4;
+  }
 }
 
 @media screen and (max-width: $tablet) {

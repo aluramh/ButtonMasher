@@ -1,11 +1,13 @@
 import React from 'react'
+import Paper from 'material-ui/Paper';
 
 const MashingSection = ({addButtonPress, counter}) => {
   return (
-    <div className="mashing-container"
+    <Paper className="mashing-container"
       onClick={addButtonPress}
-      title="Clicks in this area also count as button presses.">
-    </div>
+      title="Clicks in this area also count as button presses."
+    >
+    </Paper>
   )
 }
 

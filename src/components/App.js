@@ -37,8 +37,7 @@ class App extends Component {
     }
   }
 
-  setTimerPeriod = (e) => {
-    const val = parseInt(e.target.value, 10)
+  setTimerPeriod = (val) => {
     this.setState({maxTime: val})
   }
 
@@ -75,7 +74,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="App-background"></div>
         <Introduction />
         <MashingScreen
           {...this.state}

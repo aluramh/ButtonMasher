@@ -9,9 +9,8 @@ $fontFamily: 'Lato', sans-serif;
 .mashing-page-container {
   .mashing-container {
     height: 600px;
+    // width: 100% !important;
     /* width: 100%; */
-    border-radius: 4px;
-    margin: 1rem;
     -webkit-user-select: none;  /* Chrome all / Safari all */
     -moz-user-select: none;     /* Firefox all */
     -ms-user-select: none;      /* IE 10+ */
@@ -19,7 +18,6 @@ $fontFamily: 'Lato', sans-serif;
     background-image: url('./../assets/mashing-bg.jpg');
     background-size: cover;
     background-position: center;
-    box-shadow: 0 2px 12px 0px black;
   }
   
   .timer-container {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './Introduction.css'
 
-const IntroductionContent = ({handleClose}) => {
+const IntroductionContent = ({ handleClose }) => {
   return (
     <section className="container introduction">
       <div className="jumbotron">
@@ -31,13 +31,16 @@ class Introduction extends Component {
   }
 
   toggleIntro = () => {
-    this.setState({ show: false })
+    this.setState({ show: !this.state.show })
+    // TO-DO Set cookie to remember this.
   }
 
   render () {
     return (
       <div>
-        {this.state.show ? <IntroductionContent handleClose={this.toggleIntro}/> : <div/>}
+        {this.state.show 
+          ? <IntroductionContent handleClose={this.toggleIntro}/> 
+          : <div/>}
       </div>
     )
   }

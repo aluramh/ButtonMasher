@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from 'material-ui/Button';
 
 const Timer = ({
   // Actions
@@ -17,16 +18,16 @@ const Timer = ({
             <tr>
               <th>Timer period:</th>
               <td>
-                <div className="btn-group btn-group-toggle mash-time-selector">
+                <div>
                   {maxTimeOptions.map(mashingTime => 
-                    <label key={mashingTime} 
-                      className={`btn btn-secondary ${maxTime === mashingTime ? 'active' : null}`}>
-                      <input type="radio" name="mash"
-                        value={mashingTime} 
-                        checked={maxTime === mashingTime} 
-                        onChange={setTimerPeriod} />
+                    <Button
+                      color="primary"
+                      variant={maxTime === mashingTime && 'raised'}
+                      key={mashingTime} 
+                      onClick={() => setTimerPeriod(mashingTime)}
+                    >
                       {mashingTime / 1000} s
-                    </label>)}
+                    </Button>)}
                 </div>
               </td>
             </tr>
